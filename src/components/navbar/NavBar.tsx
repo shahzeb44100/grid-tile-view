@@ -13,7 +13,7 @@ const NavBar: React.FC = () => {
 
   return (
     <div className="flex items-center justify-between border-b shadow-xl px-8 py-4">
-      <h2 className="text-xl font-semibold">Coding Task</h2>
+      <h2 className="text-xl font-semibold">Coding Assignment</h2>
       <nav>
         <section className="MOBILE-MENU flex lg:hidden">
           <div className="HAMBURGER-ICON flex flex-col justify-center items-center cursor-pointer" onClick={() => setIsNavOpen((prev) => !prev)}>
