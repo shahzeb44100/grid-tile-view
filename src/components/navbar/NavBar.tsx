@@ -6,14 +6,14 @@ const NavBar: React.FC = () => {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
-  
+
   const handleCloseMenu = () => {
     setIsNavOpen(false);
   };
 
   return (
     <div className="flex items-center justify-between border-b shadow-xl px-8 py-4">
-      <h2 className="text-xl font-semibold">Coding Assignment</h2>
+      <h2 className="text-xl font-semibold">Coding Task</h2>
       <nav>
         <section className="MOBILE-MENU flex lg:hidden">
           <div className="HAMBURGER-ICON flex flex-col justify-center items-center cursor-pointer" onClick={() => setIsNavOpen((prev) => !prev)}>
@@ -50,7 +50,6 @@ const NavBar: React.FC = () => {
             </ul>
           </div>
         </section>
-
         <ul className="DESKTOP-MENU hidden font-semibold space-x-8 lg:flex">
           <li className={`transition-all duration-300 ${isActive('/') ? 'underline text-green-500' : 'hover:underline'}`}>
             <Link to="/">Home</Link>
