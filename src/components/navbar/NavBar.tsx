@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -9,6 +9,9 @@ const NavBar: React.FC = () => {
   const [isNestedSubMenuOpen, setIsNestedSubMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const location = useLocation();
+
+  const subMenuRef = useRef<NodeJS.Timeout | null>(null);
+  const nestedSubMenuRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -40,26 +43,32 @@ const NavBar: React.FC = () => {
 
   const handleMouseEnterSubMenu = () => {
     if (!isMobile) {
+      clearTimeout(subMenuRef.current!);
       setIsSubMenuOpen(true);
     }
   };
 
   const handleMouseLeaveSubMenu = () => {
     if (!isMobile) {
-      setIsSubMenuOpen(false);
-      setIsNestedSubMenuOpen(false);
+      subMenuRef.current = setTimeout(() => {
+        setIsSubMenuOpen(false);
+        setIsNestedSubMenuOpen(false);
+      }, 200);
     }
   };
 
   const handleMouseEnterNestedMenu = () => {
     if (!isMobile) {
+      clearTimeout(nestedSubMenuRef.current!);
       setIsNestedSubMenuOpen(true);
     }
   };
 
   const handleMouseLeaveNestedMenu = () => {
     if (!isMobile) {
-      setIsNestedSubMenuOpen(false);
+      nestedSubMenuRef.current = setTimeout(() => {
+        setIsNestedSubMenuOpen(false);
+      }, 200);
     }
   };
 
@@ -109,7 +118,11 @@ const NavBar: React.FC = () => {
                   </span>
                 </div>
                 {isSubMenuOpen && (
-                  <ul className="absolute w-48 top-full left-0 bg-white shadow-lg rounded-lg p-2 transition-transform duration-300 transform scale-95 origin-top">
+                  <ul
+                    className="absolute w-48 top-full left-0 bg-white shadow-lg rounded-lg p-2 transition-transform duration-300 transform scale-95 origin-top"
+                    onMouseEnter={handleMouseEnterSubMenu}
+                    onMouseLeave={handleMouseLeaveSubMenu}
+                  >
                     <li className="p-2 hover:bg-gray-100 rounded" onClick={handleCloseMenu}>
                       <Link to="/service1">Service 1</Link>
                     </li>
@@ -177,6 +190,8 @@ const NavBar: React.FC = () => {
             {isSubMenuOpen && (
               <ul
                 className="absolute w-48 top-full left-0 bg-white shadow-lg rounded-lg p-2 transition-transform duration-300 transform scale-95 origin-top"
+                onMouseEnter={handleMouseEnterSubMenu}
+                onMouseLeave={handleMouseLeaveSubMenu}
               >
                 <li className="p-2 hover:bg-gray-100 rounded">
                   <Link to="/service1">Service 1</Link>
